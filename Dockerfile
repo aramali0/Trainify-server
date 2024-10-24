@@ -1,28 +1,20 @@
-# First stage: Build the application
-FROM maven:3.8.6-openjdk-17-slim AS build
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the pom.xml and download dependencies first (to cache dependencies)
-COPY pom.xml ./
-RUN mvn dependency:go-offline -B
-
-# Copy the rest of the application source code and build the application
-COPY src ./src
-RUN mvn clean package -DskipTests
-
-# Second stage: Run the application
+# Use an official OpenJDK runtime as a parent image
 FROM openjdk:17-jdk-alpine
 
+# Install Maven
+RUN apk add --no-cache maven
+
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the first stage
-COPY --from=build /app/target/Experts-Human-Capita-0.0.1-SNAPSHOT.jar /app/Experts-Human-Capita.jar
+# Copy the Maven build file and source code
+COPY . .
+
+# Build the application
+RUN mvn clean package -DskipTests
 
 # Expose the application port
 EXPOSE 8087
 
 # Run the application
-CMD ["java", "-jar", "Experts-Human-Capita.jar"]
+CMD ["java", "-jar", "target/Experts-Human-Capita-0.0.1-SNAPSHOT.jar"]
