@@ -40,17 +40,6 @@ public class BannerController {
         return ResponseEntity.ok(banners);
     }
 
-    /**
-     * Creates a new banner with translations.
-     *
-     * @param backgroundImage The background image file.
-     * @param link1Href       The first link's href.
-     * @param link2Href       The second link's href.
-     * @param translationsJson The translations in JSON format.
-     * @return The created Banner entity.
-     * @throws FileStorageException
-     * @throws JsonProcessingException
-     */
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Banner> createBanner(
             @RequestParam("backgroundImage") MultipartFile backgroundImage,

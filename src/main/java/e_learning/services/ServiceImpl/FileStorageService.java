@@ -1,63 +1,52 @@
 package e_learning.services.ServiceImpl;
 
-import ch.qos.logback.core.util.StringUtil;
 import e_learning.exceptions.FileStorageException;
-import e_learning.security.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import java.util.Map;
 
 @Service
 public class FileStorageService {
 
-    private final Path fileStorageLocation;
-
-    @Value("${file.replaceUrl}")
-    private String replaceUrl;
+    private final Cloudinary cloudinary;
 
     @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties) throws FileStorageException {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored." + ex.toString());
-        }
+    public FileStorageService(@Value("${cloudinary.cloud_name}") String cloudName,
+                              @Value("${cloudinary.api_key}") String apiKey,
+                              @Value("${cloudinary.api_secret}") String apiSecret) {
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+        ));
     }
 
-    public String storeFile(MultipartFile file) throws FileStorageException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
+    public String storeFile(MultipartFile file)  throws FileStorageException {
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            // Upload file to Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
 
-            return targetLocation.toString();
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!"+ ex);
+            // Get the secure URL for accessing the file
+            return uploadResult.get("secure_url").toString();
+        } catch (IOException e) {
+            throw new FileStorageException("Could not upload file to Cloudinary. " + e.getMessage());
         }
     }
-
 
     public String saveImage(MultipartFile image) throws FileStorageException {
-//        String replaceUrl = "C:\\Users\\PC\\Desktop\\Trainify-server\\backend\\uploads\\";
+        return storeFile(image);
+    }
 
-        // Handle image upload
-        String imagePath = null;
-        if (image != null) {
-            imagePath = this.storeFile(image);
-            imagePath = imagePath.replace(replaceUrl, "uploads/");
-        }
-        return imagePath;
+    public String saveVideo(MultipartFile video) throws FileStorageException {
+        return storeFile(video);
+    }
+
+    public String saveDocument(MultipartFile document) throws FileStorageException {
+        return storeFile(document);
     }
 }
