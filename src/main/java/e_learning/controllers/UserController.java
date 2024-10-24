@@ -129,6 +129,7 @@ public class UserController {
 //            String imagePath = fileStorageService.storeFile(image);
 //            imagePath = imagePath.replace("app\\uploads\\", "uploads/");
             String imagePath = fileStorageService.saveImage(image);
+            System.out.println("imagePath: " + imagePath);
             existingUser.setProfileImagePath(imagePath);
         }
 

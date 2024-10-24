@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/messages")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5137")
+@CrossOrigin(origins = "https://trainify-five.vercel.app")
 public class MessageController {
     private final MessageService messageService;
     private final UserAppRepository userAppRepository;
