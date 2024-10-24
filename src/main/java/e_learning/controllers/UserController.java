@@ -110,17 +110,20 @@ public class UserController {
         existingUser.setAge(age);
 
         // Clear and update the user's roles
-        List<RoleApp> newRoles = new ArrayList<>();
-        for (String roleName : roles) {
-            RoleApp role = roleServiceImpl.findByRole(UserRole.valueOf(roleName.toUpperCase()));
-            if (role != null) {
-                newRoles.add(role);
-            } else {
-                return ResponseEntity.badRequest().body("Invalid role: " + roleName);
-            }
-        }
-        existingUser.setRoles(newRoles); // Set the new list of roles
 
+        List<RoleApp> newRoles = new ArrayList<>();
+
+        if(roles != null) {
+            for (String roleName : roles) {
+                RoleApp role = roleServiceImpl.findByRole(UserRole.valueOf(roleName.toUpperCase()));
+                if (role != null) {
+                    newRoles.add(role);
+                } else {
+                    return ResponseEntity.badRequest().body("Invalid role: " + roleName);
+                }
+            }
+            existingUser.setRoles(newRoles); // Set the new list of roles
+        }
         // Handle profile image if provided
         if (image != null) {
 //            String imagePath = fileStorageService.storeFile(image);
