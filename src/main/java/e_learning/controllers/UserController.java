@@ -94,7 +94,7 @@ public class UserController {
             @RequestParam("gender") String gender,
             @RequestParam("CIN") String CIN,
             @RequestParam("age") int age,
-            @RequestParam("roles") List<String> roles,  // Accepting a list of roles
+            @RequestParam(value = "roles" , required = false) List<String> roles,  // Accepting a list of roles
             @RequestPart(value = "image", required = false) MultipartFile image) throws FileStorageException {
 
         UserApp existingUser = userService.findByEmail(email);
@@ -123,8 +123,9 @@ public class UserController {
 
         // Handle profile image if provided
         if (image != null) {
-            String imagePath = fileStorageService.storeFile(image);
-            imagePath = imagePath.replace("app\\uploads\\", "uploads/");
+//            String imagePath = fileStorageService.storeFile(image);
+//            imagePath = imagePath.replace("app\\uploads\\", "uploads/");
+            String imagePath = fileStorageService.saveImage(image);
             existingUser.setProfileImagePath(imagePath);
         }
 
