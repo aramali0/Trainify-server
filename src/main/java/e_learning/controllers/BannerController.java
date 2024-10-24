@@ -66,9 +66,8 @@ public class BannerController {
         );
 
         // Store the image
-        String imagePath = fileStorageService.storeFile(backgroundImage);
-        // Adjust the image path as needed based on your storage setup
-        imagePath = imagePath.replace("app\\uploads\\", "uploads/");
+        String imagePath = fileStorageService.saveImage(backgroundImage);
+        System.out.println(imagePath);
 
         // Create BannerCreateDTO
         BannerCreateDTO bannerCreateDTO = BannerCreateDTO.builder()
