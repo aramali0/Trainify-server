@@ -59,6 +59,9 @@ public class EntrepriseService {
             entreprise.setLogo(logoPath.replace("app\\uploads\\", "uploads/"));
         }
 
+        entreprise.setShowQuizResult(true);
+        entreprise.setShowQuizCorrection(true);
+
         Entreprise savedEntreprise = entrepriseRepository.save(entreprise);
         savedEntreprise.getHierarchicalUnits().forEach(hierarchicalUnit -> hierarchicalUnit.setEntreprise(savedEntreprise));
         hierarchicalUnitRepository.saveAll(savedEntreprise.getHierarchicalUnits());

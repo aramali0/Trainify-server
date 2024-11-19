@@ -52,12 +52,12 @@ public class InitializationService {
 
     public void createAboutUs() {
         AboutUs aboutUs = new AboutUs();
-        aboutUs.setTitle_en("Welcome to the Online Learning Center");
-        aboutUs.setDescription_en("This is the description of the learning center.");
-        aboutUs.setTitle_fr("Bienvenue au Centre d'apprentissage en ligne");
-        aboutUs.setDescription_fr("Ceci est la description du centre d'apprentissage.");
-        aboutUs.setTitle_ar("مرحبًا بكم في مركز التعلم عبر الإنترنت");
-        aboutUs.setDescription_ar("هذه هي وصف مركز التعلم.");
+        aboutUs.setTitle_en("Welcome to EHC Learning and coaching");
+        aboutUs.setDescription_en("Our online coaching and training services management platform, which offers complete management of online learning/coaching features adapted to different types of users, such as administrators , training/project managers, coaches, trainers, participants");
+        aboutUs.setTitle_fr("Bienvenue à l'apprentissage et au coaching EHC");
+        aboutUs.setDescription_fr("Notre plateforme de gestion de prestations coaching et formation en ligne, qui offre une gestion complète de fonctionnalités d'apprentissage/coaching en ligne adaptées à différents types d'utilisateurs ,tels que les administrateurs ,les responsables de formation/projet ,coachs ,formateurs ,participants");
+        aboutUs.setTitle_ar("منصة التدريب وإدارة الخدمات لدينا");
+        aboutUs.setDescription_ar("منصة التدريب وإدارة الخدمات لدينا التدريب عبر الإنترنت،تقدم إدارة كاملة للتعلم/التدريب عبر الإنترنت تتكيف مع أنواع مختلفة من المستخدمين، مثل المسؤولين، ومديري التدريب/المشاريع، والمدربين، والمشاركين");
         aboutUs.setId(1L);
         aboutUsRepository.save(aboutUs);
     }
