@@ -26,7 +26,7 @@ public class EvaluationFormationController {
         System.out.println("userId = " + userId);
         return evaluationService.getEvaluationsByType(type , userId);
     }
-
+// there is this function in the service layer
     @GetMapping("/{userId}")
     public List<EvaluationFormationDto> getEvaluations(@PathVariable Long userId) {
         return evaluationService.getEvaluations(userId);
