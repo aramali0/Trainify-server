@@ -104,8 +104,8 @@ public class ParticipantController {
 
 
     @GetMapping("/{participantId}/libraries")
-    public ResponseEntity<List<LibraryDto>> getLibrariesByParticipantId(@PathVariable Long participantId) {
-        List<LibraryDto> libraries = participantService.getLibrariesByParticipantId(participantId);
+    public ResponseEntity<List<LibraryDto>> getLibrariesByParticipantId(@PathVariable Long participantId , @RequestParam(required = false) String libraryName , @RequestParam(required = false) Long formationId) {
+        List<LibraryDto> libraries = participantService.getLibrariesByParticipantId(participantId , libraryName , formationId);
         return ResponseEntity.ok(libraries);
     }
 

@@ -6,8 +6,11 @@ import e_learning.entity.*;
 import e_learning.mappers.mappersImpl.LibraryMapper;
 import e_learning.mappers.mappersImpl.ResourceMapper;
 import e_learning.repositories.*;
+import e_learning.specifications.LibrarySpecifications;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.util.LifecycleBase;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -75,17 +78,21 @@ public class LibraryService {
         return libraries.stream().filter(Library::isApproved).map(libraryMapper::toDto).toList();
     }
 
-    public List<LibraryDto> getResourcesByResponsableId(Long responsableId) {
+    public List<LibraryDto> getResourcesByResponsableId(Long responsableId, String libraryName, Long formationId) {
         ResponsableFormation responsableFormation = responsableFormationRepository.findById(responsableId)
                 .orElseThrow(() -> new RuntimeException("ResponsableFormation not found"));
 
         List<Cour> cours = responsableFormation.getEntreprise().getCours();
         List<Library> libraries = libraryRepository.findByCourIn(cours);
+
         return libraries.stream()
                 .filter(Library::isApproved)
+                .filter(library -> libraryName == null || library.getName().toLowerCase().contains(libraryName.toLowerCase()))
+                .filter(library -> formationId == null || library.getCour().getId().equals(formationId))
                 .map(libraryMapper::toDto)
-                .collect(toList());
+                .collect(Collectors.toList());
     }
+
     public List<ResourceDto> getResourcesByResponsableFormationId(Long id)
     {
          ResponsableFormation responsableFormation = responsableFormationRepository.findById(id)
@@ -106,7 +113,7 @@ public class LibraryService {
         libraryRepository.deleteById(id);
     }
 
-    public List<LibraryDto> getResourcesByFormateurId(Long formateurId) {
+    public List<LibraryDto> getResourcesByFormateurId(Long formateurId , String libraryName , Long formationId) {
         Formateur formateur = formateurRepository.findById(formateurId)
                 .orElseThrow(() -> new RuntimeException("formateur not found"));
 
@@ -114,11 +121,13 @@ public class LibraryService {
         List<Library> libraries = libraryRepository.findByCourIn(cours);
         return libraries.stream()
                 .filter(Library::isApproved)
+                .filter(library -> libraryName == null || library.getName().toLowerCase().contains(libraryName.toLowerCase()))
+                .filter(library -> formationId == null || library.getCour().getId().equals(formationId))
                 .map(libraryMapper::toDto)
                 .collect(toList());
     }
 
-    public List<LibraryDto> getResourcesByParticipant(Long participantId) {
+    public List<LibraryDto> getResourcesByParticipant(Long participantId , String libraryName , Long formationId) {
          Participant participant = participantRepository.findById(participantId)
                 .orElseThrow(() -> new RuntimeException("formateur not found"));
 
@@ -132,11 +141,13 @@ public class LibraryService {
         List<Library> libraries = libraryRepository.findByCourIn(cours);
         return libraries.stream()
                 .filter(Library::isApproved)
+                .filter(library -> libraryName == null || library.getName().toLowerCase().contains(libraryName.toLowerCase()))
+                .filter(library -> formationId == null || library.getCour().getId().equals(formationId))
                 .map(libraryMapper::toDto)
                 .collect(toList());
     }
 
-    public List<LibraryDto> getResourcesByChargeFormationId(Long responsableId) {
+    public List<LibraryDto> getResourcesByChargeFormationId(Long responsableId , String libraryName , Long formationId) {
         ChargeFormation responsableFormation = chargeFormationRepository.findById(responsableId)
                 .orElseThrow(() -> new RuntimeException("charge formation not found"));
 
@@ -144,6 +155,8 @@ public class LibraryService {
         List<Library> libraries = libraryRepository.findByCourIn(cours);
         return libraries.stream()
                 .filter(Library::isApproved)
+                .filter(library -> libraryName == null || library.getName().toLowerCase().contains(libraryName.toLowerCase()))
+                .filter(library -> formationId == null || library.getCour().getId().equals(formationId))
                 .map(libraryMapper::toDto)
                 .collect(toList());
     }
@@ -161,5 +174,16 @@ public class LibraryService {
                 .flatMap(resource -> resource)
                 .map(resourceMapper::toDto)
                 .collect(toList());
+    }
+
+    public List<LibraryDto> searchLibraries(String name, Long formationId) {
+        Specification<Library> spec = Specification.where(LibrarySpecifications.hasNameContaining(name))
+                                                   .and(LibrarySpecifications.hasFormationId(formationId));
+
+        List<Library> libraries = libraryRepository.findAll((Sort) spec);
+        return libraries.stream()
+                        .filter(Library::isApproved)
+                        .map(libraryMapper::toDto)
+                        .toList();
     }
 }
