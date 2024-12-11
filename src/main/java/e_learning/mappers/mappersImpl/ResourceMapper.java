@@ -23,6 +23,7 @@ public class ResourceMapper {
                 resource.getTitle(),
                 resource.getType(),
                 resource.getFilePath(),
+                resource.isDownloadable(),
                 resource.isApproved(),
                 resource.getLibrary() != null ? resource.getLibrary().getId() : null,
                 resource.getSection() != null ? resource.getSection().getId() : null,
@@ -38,6 +39,7 @@ public class ResourceMapper {
         resource.setType(resourceDto.type());
         resource.setFilePath(resourceDto.filePath());
         resource.setApproved(resourceDto.isApproved());
+        resource.setDownloadable(resourceDto.isDownloadable());
 
         if (resourceDto.sectionId() != null) {
             Section section = sectionRepository.findById(resourceDto.sectionId()).orElse(null);

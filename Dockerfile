@@ -18,3 +18,6 @@ EXPOSE 8087
 
 # Run the application
 CMD ["java", "-jar", "target/Experts-Human-Capita-0.0.1-SNAPSHOT.jar"]
+
+
+

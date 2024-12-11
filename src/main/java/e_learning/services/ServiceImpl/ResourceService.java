@@ -293,4 +293,20 @@ public class ResourceService {
                 .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
         return resourceMapper.toDto(resource);
     }
+
+    public ResourceDto updateDownloadVideoStatus(Long id, boolean downloadVideoStatus) {
+
+        ResourceEntity resource = resourceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+
+        resource.setDownloadable(downloadVideoStatus);
+        ResourceEntity newResource =  resourceRepository.save(resource);
+        return resourceMapper.toDto(newResource);
+    }
+
+    public Boolean getDownloadVideoStatus(Long id) {
+        ResourceEntity resource = resourceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Resource not found"));
+        return resource.isDownloadable();
+    }
 }

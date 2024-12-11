@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -202,5 +203,29 @@ public class EntrepriseService {
         entreprise.setShowExcelMethode(showExcelMethode);
         Entreprise updatedEntreprise = entrepriseRepository.save(entreprise);
         return entrepriseMapper.toDto(updatedEntreprise);
+    }
+
+    public EntrepriseDto updateDownloadVideo(Long id, boolean downloadVideo) {
+        Entreprise entreprise = entrepriseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entreprise not found"));
+        entreprise.setDownloadVideo(downloadVideo);
+        Entreprise updatedEntreprise = entrepriseRepository.save(entreprise);
+        return entrepriseMapper.toDto(updatedEntreprise);
+    }
+
+    public boolean isDownloadVideoResponsable(Long reponsableId) {
+        return entrepriseRepository.findByResponsableFormationsUserId(reponsableId).isDownloadVideo();
+    }
+
+
+    public boolean isDownloadVideoForamteur(Long formateurId) {
+        Optional<Entreprise> optional =  entrepriseRepository.findByFormateursUserId(formateurId);
+        return optional.map(Entreprise::isDownloadVideo).orElse(false);
+    }
+
+
+    public boolean isDownloadVideoChargeFormation(Long chargeFormationId) {
+        Optional<Entreprise> optional =  entrepriseRepository.findByChargeFormationsUserId(chargeFormationId);
+        return optional.map(Entreprise::isDownloadVideo).orElse(false);
     }
 }

@@ -34,9 +34,7 @@ public class LibraryService {
     private final ActionApprovalRepository actionApprovalRepository;
 
     public LibraryDto saveLibrary(LibraryDto libraryDto, UserApp userApp) {
-        System.out.println("LibraryDto: " + libraryDto);
         Library library = libraryMapper.toEntity(libraryDto);
-        System.out.println("Library: " + library);
         library.setApproved(true);
         library.setCreatedAt(new Date());
         library.setCreatedBy(userApp);

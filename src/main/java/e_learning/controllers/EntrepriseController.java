@@ -137,4 +137,27 @@ public class EntrepriseController {
         EntrepriseDto updatedEntreprise = entrepriseService.updateShowExcelMethode(id, showExcelMethode);
         return new ResponseEntity<>(updatedEntreprise, HttpStatus.OK);
     }
+
+    @PatchMapping("/{id}/download-video")
+    public ResponseEntity<EntrepriseDto> updateDownloadVideo(@PathVariable Long id, @RequestParam boolean showDownloadVideo) {
+        EntrepriseDto updatedEntreprise = entrepriseService.updateDownloadVideo(id, showDownloadVideo);
+        return new ResponseEntity<>(updatedEntreprise, HttpStatus.OK);
+    }
+
+    @GetMapping("/{reponsableId}/isDownloadVideo/responsable")
+    public boolean isDownloadVideoResponsable(@PathVariable Long reponsableId) {
+        return entrepriseService.isDownloadVideoResponsable(reponsableId);
+    }
+
+
+    @GetMapping("/{formateurId}/isDownloadVideo/formateur")
+    public boolean isDownloadVideoFormateur(@PathVariable Long formateurId) {
+        return entrepriseService.isDownloadVideoForamteur(formateurId);
+    }
+
+
+    @GetMapping("/{chargeFormationId}/isDownloadVideo/charge-formation")
+    public boolean isDownloadVideoChargeFormation(@PathVariable Long chargeFormationId) {
+        return entrepriseService.isDownloadVideoChargeFormation(chargeFormationId);
+    }
 }

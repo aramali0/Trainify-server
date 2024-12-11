@@ -35,6 +35,7 @@ public class EntrepriseMapper {
         dto.setShowExcelMethode(entreprise.isShowExcelMethode());
         dto.setShowQuizResult(entreprise.isShowQuizResult());
         dto.setShowQuizCorrection(entreprise.isShowQuizCorrection());
+        dto.setShowDownloadVideo(entreprise.isDownloadVideo());
         if(entreprise.getResponsableFormations() != null) {
             dto.setResponsableFormationIds(entreprise.getResponsableFormations().stream().map(UserApp::getUserId).collect(Collectors.toList()));
         }
@@ -81,6 +82,7 @@ public class EntrepriseMapper {
         entreprise.setNumeroIF(dto.getNumeroIF());
         entreprise.setNumeroTP(dto.getNumeroTP());
         entreprise.setNombreSalaries(dto.getNombreSalaries());
+        entreprise.setDownloadVideo(dto.isShowDownloadVideo());
 
         if(dto.getResponsableFormationIds() != null) {
             entreprise.setResponsableFormations(responsableFormationRepository.findAllById(dto.getResponsableFormationIds()));

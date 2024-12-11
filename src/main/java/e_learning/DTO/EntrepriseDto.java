@@ -21,6 +21,7 @@ public class EntrepriseDto {
     private boolean showQuizResult;
     private boolean showQuizCorrection;
     private boolean showExcelMethode;
+    private boolean showDownloadVideo;
     private int nombreSalaries;
     private List<Long> responsableFormationIds;
     private List<Long> coursIds;

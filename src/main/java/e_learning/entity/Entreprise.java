@@ -28,6 +28,7 @@ public class Entreprise {
     private boolean showQuizResult;
     private boolean showQuizCorrection;
     private boolean showExcelMethode;
+    private boolean downloadVideo;
 
     @OneToMany(mappedBy = "entreprise", cascade = CascadeType.ALL)
     private List<HierarchicalUnit> hierarchicalUnits; //  List of all hierarchical units

@@ -11,6 +11,7 @@ import e_learning.repositories.ResourceRepository;
 import e_learning.repositories.UserAppRepository;
 import e_learning.services.ServiceImpl.ResourceService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.User;
@@ -168,5 +169,17 @@ public class ResourceController {
         }
         resourceService.removeResourceFromSection(resourceId, sectionId, userApp);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/download-video-status")
+    public ResponseEntity<ResourceDto> updateDownloadVideoStatus(@PathVariable Long id, @RequestParam boolean downloadVideoStatus) {
+        ResourceDto updatedResource = resourceService.updateDownloadVideoStatus(id, downloadVideoStatus);
+        return new ResponseEntity<>(updatedResource, HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/download-video-status")
+    public ResponseEntity<Boolean> getDownloadVideoStatus(@PathVariable Long id) {
+        Boolean downloadVideoStatus = resourceService.getDownloadVideoStatus(id);
+        return ResponseEntity.ok(downloadVideoStatus);
     }
 }

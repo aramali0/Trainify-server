@@ -23,6 +23,7 @@ public class ResourceEntity {
     private String title;
     private String type;
     private String filePath;
+    private boolean isDownloadable;
     private boolean isApproved;
     @ManyToOne
     private UserApp createdBy;
