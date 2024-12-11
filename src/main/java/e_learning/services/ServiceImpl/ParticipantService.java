@@ -141,7 +141,7 @@ public class ParticipantService {
     }
 
 
-    public List<LibraryDto> getLibrariesByParticipantId(Long participantId) {
+    public List<LibraryDto> getLibrariesByParticipantId(Long participantId , String libraryName , Long formationId) {
         Participant participant = participantRepository.findById(participantId)
                 .orElseThrow(() -> new EntityNotFoundException("Participant not found"));
 
@@ -157,6 +157,9 @@ public class ParticipantService {
         // Extract libraries associated with the courses
         List<Library> libraries = cours.stream()
                 .flatMap(cour -> cour.getLibraries().stream())
+                .filter(Library::isApproved)
+                .filter(library -> libraryName == null || library.getName().toLowerCase().contains(libraryName.toLowerCase()))
+                .filter(library -> formationId == null || library.getCour().getId().equals(formationId))
                 .distinct()
                 .collect(Collectors.toList());
 

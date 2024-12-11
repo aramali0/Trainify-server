@@ -55,8 +55,8 @@ public class LibraryController {
     }
 
     @GetMapping("/responsable/{responsableId}")
-    public ResponseEntity<List<LibraryDto>> getLibrariesByResponsableId(@PathVariable Long responsableId) {
-        return ResponseEntity.ok(libraryService.getResourcesByResponsableId(responsableId));
+    public ResponseEntity<List<LibraryDto>> getLibrariesByResponsableId(@PathVariable Long responsableId , @RequestParam(required = false) String libraryName , @RequestParam(required = false) Long formationId) {
+        return ResponseEntity.ok(libraryService.getResourcesByResponsableId(responsableId,libraryName,formationId));
     }
 
     @GetMapping("/responsable/{responsableId}/resources")
@@ -65,8 +65,8 @@ public class LibraryController {
     }
 
     @GetMapping("/charge-formation/{responsableId}")
-    public ResponseEntity<List<LibraryDto>> getLibrariesByChargeFormation(@PathVariable Long responsableId) {
-        return ResponseEntity.ok(libraryService.getResourcesByChargeFormationId(responsableId));
+    public ResponseEntity<List<LibraryDto>> getLibrariesByChargeFormation(@PathVariable Long responsableId , @RequestParam(required = false) String libraryName , @RequestParam(required = false) Long formationId) {
+        return ResponseEntity.ok(libraryService.getResourcesByChargeFormationId(responsableId , libraryName , formationId));
     }
 
     @GetMapping("/charge-formation/{responsableId}/resources")
@@ -74,13 +74,13 @@ public class LibraryController {
         return ResponseEntity.ok(libraryService.getResourcesByResponsableChargeFormationId(responsableId));
     }
     @GetMapping("/formateur/{formateurId}")
-    public ResponseEntity<List<LibraryDto>> getLibririesByFormateurId(@PathVariable Long formateurId) {
-        return ResponseEntity.ok(libraryService.getResourcesByFormateurId(formateurId));
+    public ResponseEntity<List<LibraryDto>> getLibririesByFormateurId(@PathVariable Long formateurId ,  @RequestParam(required = false) String libraryName , @RequestParam(required = false) Long formationId) {
+        return ResponseEntity.ok(libraryService.getResourcesByFormateurId(formateurId , libraryName , formationId));
     }
 
   @GetMapping("/participant/{participantId}")
-    public ResponseEntity<List<LibraryDto>> getResourceByParticipant(@PathVariable Long participantId) {
-        return ResponseEntity.ok(libraryService.getResourcesByParticipant(participantId));
+    public ResponseEntity<List<LibraryDto>> getResourceByParticipant(@PathVariable Long participantId ,  @RequestParam(required = false) String libraryName , @RequestParam(required = false) Long formationId) {
+        return ResponseEntity.ok(libraryService.getResourcesByParticipant(participantId,libraryName,formationId));
     }
 
     @DeleteMapping("/{id}")
@@ -100,4 +100,14 @@ public class LibraryController {
         libraryService.deleteLibrary(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<LibraryDto>> searchLibraries(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long formationId) {
+        List<LibraryDto> libraries = libraryService.searchLibraries(name, formationId);
+        return ResponseEntity.ok(libraries);
+    }
+
 }
