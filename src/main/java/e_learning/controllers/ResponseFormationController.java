@@ -11,18 +11,25 @@ import java.util.List;
 @RequestMapping("/responses-formation")
 @RequiredArgsConstructor
 public class ResponseFormationController {
-
     private final ResponseFormationService responseService;
-
 
     @PostMapping
     public ResponseFormationDto submitResponse(@RequestBody ResponseFormationDto dto) {
         return responseService.submitResponse(dto);
     }
 
-    @GetMapping("/{evaluationId}")
-    public List<ResponseFormationDto> getResponses(@PathVariable Long evaluationId) {
-        return responseService.getResponsesByEvaluationId(evaluationId);
+    @GetMapping("/{responseId}")
+    public ResponseFormationDto getResponse(@PathVariable Long responseId) {
+        return responseService.getResponse(responseId);
     }
 
+    @GetMapping("/evaluation/{evaluationId}")
+    public List<ResponseFormationDto> getResponsesByEvaluation(@PathVariable Long evaluationId) {
+        return responseService.getResponsesByEvaluation(evaluationId);
+    }
+
+    @GetMapping("/check/{userId}/{evaluationId}")
+    public List<ResponseFormationDto> checkUserHasResponse(@PathVariable Long userId, @PathVariable Long evaluationId) {
+        return responseService.checkUserHasResponse(userId, evaluationId);
+    }
 }

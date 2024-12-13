@@ -3,6 +3,7 @@ package e_learning.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Map;
 
 @ToString
@@ -11,7 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class ResponseFormation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,8 @@ public class ResponseFormation {
     @ManyToOne
     private UserApp user;
 
-    @ManyToOne
-    private Entreprise entreprise;
+    @OneToMany(mappedBy = "response", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<BlockAnswer> blockAnswers;
 
-    @ElementCollection
-    private Map<String, Integer> answers;
-
-    private Double percentage;
+    private Double totalScore;
 }

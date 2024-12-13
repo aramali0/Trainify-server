@@ -1,9 +1,11 @@
 package e_learning.entity;
 
 import e_learning.enums.EvaluationType;
+import e_learning.services.ServiceImpl.CourService;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,14 +25,14 @@ public class EvaluationFormation {
     @Enumerated(EnumType.STRING)
     private EvaluationType type;
 
-    @ElementCollection
-    private List<String> questions;
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<EvaluationBlock> blocks = new ArrayList<>();
 
     @ManyToOne
     private UserApp createdBy;
 
     @ManyToOne
-    private Entreprise entreprise;
+    private Cour cour;
 
     private Date createdAt;
 }
