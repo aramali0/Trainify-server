@@ -28,7 +28,7 @@ This repository contains the backend code for the e-learning platform, handling 
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-org/e-learning-backend.git
+   git clone https://github.com/aramali0/Trainify-server.git
    cd e-learning-backend
    ```
 2. Configure the database in `application.properties`:
